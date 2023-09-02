@@ -1,9 +1,7 @@
+import { CatExpensePage } from '@/pages/CatExpensePage/CatExpensePage'
+
 function App() {
-  return (
-    <main className="p-6">
-      <h1 className="text-center text-lg font-bold">Cat Expense Web</h1>
-    </main>
-  )
+  return <CatExpensePage />
 }
 
 export default App
