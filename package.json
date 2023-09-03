@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build-gh": "pnpm build --base=/cat-expense-web/",
+    "deploy-gh": "pnpm build-gh && gh-pages -d dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest"
@@ -45,6 +47,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "gh-pages": "^6.0.0",
     "postcss": "^8.4.29",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.4.1",
