@@ -1,6 +1,6 @@
 'use client'
 
-import { flexRender, RowData, useReactTable } from '@tanstack/react-table'
+import { flexRender, Row, RowData, useReactTable } from '@tanstack/react-table'
 import {
   Table,
   TableBody,
@@ -10,14 +10,18 @@ import {
   TableRow,
 } from '@/lib/design-system/Table'
 
-type DataTableProps<TData extends RowData> = {
+export type DataTableProps<TData extends RowData> = {
   table: ReturnType<typeof useReactTable<TData>>
   columnLength: number
+  getRowProps?: (
+    row: Row<TData>,
+  ) => React.ComponentPropsWithoutRef<typeof TableRow>
 }
 
 export function DataTable<TData extends RowData>({
   table,
   columnLength,
+  getRowProps,
 }: DataTableProps<TData>) {
   return (
     <div className="rounded-md border">
@@ -46,6 +50,7 @@ export function DataTable<TData extends RowData>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
+                {...getRowProps?.(row)}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>

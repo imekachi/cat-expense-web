@@ -18,7 +18,8 @@ import {
 } from '@/domain/catExpense'
 import { Button } from '@/lib/design-system/Button'
 import { Checkbox } from '@/lib/design-system/Checkbox'
-import { DataTable } from '@/lib/design-system/DataTable'
+import { DataTable, DataTableProps } from '@/lib/design-system/DataTable'
+import { cn } from '@/lib/utils/cn'
 import { centsToDollars } from '@/lib/utils/currencyUnit'
 import { formatCurrency } from '@/lib/utils/formatCurrency'
 
@@ -77,6 +78,8 @@ const columns: ColumnDef<CatExpense>[] = [
   },
 ]
 
+const HIGHTEST_EXPENSES_CLASSNAME = 'bg-amber-100/50'
+
 export type CatExpenseTableProps = {
   expenses: CatExpense[]
   rowSelection: RowSelectionState
@@ -107,5 +110,43 @@ export function CatExpenseTable({
     },
   })
 
-  return <DataTable table={table} columnLength={columns.length} />
+  const highestExpenses = React.useMemo(
+    () => Math.max(...expenses.map((expense) => expense.amount)),
+    [expenses],
+  )
+
+  // highlight highest expenses
+  const getRowProps: NonNullable<DataTableProps<CatExpense>['getRowProps']> =
+    React.useCallback(
+      (row) => {
+        const amount = row.getValue<number>('amount')
+        const isHighest = amount === highestExpenses
+
+        return {
+          className: isHighest ? HIGHTEST_EXPENSES_CLASSNAME : undefined,
+        }
+      },
+      [highestExpenses],
+    )
+
+  return (
+    <div>
+      <DataTable
+        table={table}
+        columnLength={columns.length}
+        getRowProps={getRowProps}
+      />
+
+      <p className="mt-4 text-sm italic text-gray-500">
+        <span
+          className={cn(
+            'mr-2 inline-block h-3 w-3 rounded-full border border-slate-700 bg-cyan-100/50',
+            HIGHTEST_EXPENSES_CLASSNAME,
+          )}
+          aria-hidden
+        />
+        Highlighted rows are the highest expenses.
+      </p>
+    </div>
+  )
 }
