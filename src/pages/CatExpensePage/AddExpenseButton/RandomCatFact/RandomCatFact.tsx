@@ -7,8 +7,7 @@ export function RandomCatFact() {
 
   return (
     <article className="text-sm italic text-slate-400">
-      <header className="font-semibold">Random cat fact:</header>
-      <p>{data.fact}</p>
+      <p>Random cat fact: {data.fact}</p>
     </article>
   )
 }

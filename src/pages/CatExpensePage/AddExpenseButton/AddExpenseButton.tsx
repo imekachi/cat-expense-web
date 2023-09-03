@@ -45,10 +45,12 @@ const addExpenseSchema = z.object({
 type AddExpenseFormValues = z.infer<typeof addExpenseSchema>
 
 export type AddExpenseButtonProps = {
-  onSubmit: (values: AddExpenseFormValues) => void
+  onSubmitNewExpense: (values: AddExpenseFormValues) => void
 }
 
-export function AddExpenseButton({ onSubmit }: AddExpenseButtonProps) {
+export function AddExpenseButton({
+  onSubmitNewExpense,
+}: AddExpenseButtonProps) {
   const [isOpen, setIsOpen] = React.useState(false)
 
   const form = useForm<AddExpenseFormValues>({
@@ -61,7 +63,7 @@ export function AddExpenseButton({ onSubmit }: AddExpenseButtonProps) {
   })
 
   const handleSubmit = form.handleSubmit((values) => {
-    onSubmit(values)
+    onSubmitNewExpense(values)
     form.reset()
     setIsOpen(false)
   })

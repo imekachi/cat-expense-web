@@ -4,6 +4,8 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  OnChangeFn,
+  RowSelectionState,
   SortingState,
   useReactTable,
 } from '@tanstack/react-table'
@@ -77,11 +79,16 @@ const columns: ColumnDef<CatExpense>[] = [
 
 export type CatExpenseTableProps = {
   expenses: CatExpense[]
+  rowSelection: RowSelectionState
+  onRowSelectionChange: OnChangeFn<RowSelectionState>
 }
 
-export function CatExpenseTable({ expenses }: CatExpenseTableProps) {
+export function CatExpenseTable({
+  expenses,
+  rowSelection,
+  onRowSelectionChange,
+}: CatExpenseTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
     data: expenses,
@@ -91,7 +98,9 @@ export function CatExpenseTable({ expenses }: CatExpenseTableProps) {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onRowSelectionChange: setRowSelection,
+    onRowSelectionChange,
+    enableRowSelection: true,
+    enableMultiRowSelection: true,
     state: {
       sorting,
       rowSelection,
