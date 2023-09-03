@@ -37,7 +37,7 @@ const addExpenseSchema = z.object({
   amount: z.coerce
     // .coerce is used to parse the input value to a number
     .number()
-    .min(0.01, 'Please enter the amount.')
+    .min(0.01, 'Please enter the amount more than 0.')
     // max 2 decimal places
     .multipleOf(0.01),
 })
