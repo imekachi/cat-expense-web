@@ -1,0 +1,1 @@
+export { RandomCatFact } from './RandomCatFact'

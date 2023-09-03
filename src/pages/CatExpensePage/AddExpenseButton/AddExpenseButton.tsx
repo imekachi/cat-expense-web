@@ -28,7 +28,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/lib/design-system/select'
+} from '@/lib/design-system/Select'
+import { RandomCatFact } from './RandomCatFact'
 
 const addExpenseSchema = z.object({
   title: z.string().min(1, 'Please enter the title.'),
@@ -76,10 +77,7 @@ export function AddExpenseButton({ onSubmit }: AddExpenseButtonProps) {
             <DialogHeader>
               <DialogTitle>Add expense</DialogTitle>
               <DialogDescription asChild>
-                <article className="text-sm italic">
-                  <header>Random cat fact:</header>
-                  <p>A cat can jump up to six times its length.</p>
-                </article>
+                <RandomCatFact />
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-6">
