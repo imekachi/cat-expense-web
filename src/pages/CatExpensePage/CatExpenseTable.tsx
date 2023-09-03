@@ -11,14 +11,13 @@ import { ArrowUpDown } from 'lucide-react'
 import * as React from 'react'
 import {
   CAT_EXPENSE_CATEGORY_BY_ID,
-  CAT_EXPENSE_FIXTURES,
   CatExpense,
   CatExpenseCategory,
 } from '@/domain/catExpense'
 import { Button } from '@/lib/design-system/Button'
 import { Checkbox } from '@/lib/design-system/Checkbox'
 import { DataTable } from '@/lib/design-system/DataTable'
-import { centsToDollars } from '@/lib/utils/centsToDollars'
+import { centsToDollars } from '@/lib/utils/currencyUnit'
 import { formatCurrency } from '@/lib/utils/formatCurrency'
 
 const columns: ColumnDef<CatExpense>[] = [
@@ -40,7 +39,7 @@ const columns: ColumnDef<CatExpense>[] = [
     ),
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'title',
     header: 'Item',
   },
   {
@@ -49,7 +48,7 @@ const columns: ColumnDef<CatExpense>[] = [
     cell: ({ row }) => {
       const categoryId = row.getValue<CatExpenseCategory['id']>('categoryId')
       const category = CAT_EXPENSE_CATEGORY_BY_ID[categoryId]
-      return <div>{category?.name ?? categoryId}</div>
+      return <div>{category?.title ?? categoryId}</div>
     },
   },
   {
@@ -76,12 +75,16 @@ const columns: ColumnDef<CatExpense>[] = [
   },
 ]
 
-export function CatExpenseTable() {
+export type CatExpenseTableProps = {
+  expenses: CatExpense[]
+}
+
+export function CatExpenseTable({ expenses }: CatExpenseTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
-    data: CAT_EXPENSE_FIXTURES,
+    data: expenses,
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),

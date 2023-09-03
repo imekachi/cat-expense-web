@@ -1,4 +1,4 @@
-import { CatExpensePage } from '@/pages/CatExpensePage/CatExpensePage'
+import { CatExpensePage } from '@/pages/CatExpensePage'
 
 function App() {
   return <CatExpensePage />
