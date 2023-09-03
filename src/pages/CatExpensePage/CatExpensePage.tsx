@@ -2,6 +2,7 @@ import { RowSelectionState } from '@tanstack/react-table'
 import { nanoid } from 'nanoid'
 import * as React from 'react'
 import { CAT_EXPENSE_FIXTURES } from '@/domain/catExpense'
+import { catExpensesStorage } from '@/domain/catExpensePersistenceStorage'
 import { Button } from '@/lib/design-system/Button'
 import { dollarsToCents } from '@/lib/utils/currencyUnit'
 import { isObjEmpty } from '@/lib/utils/isObjEmpty'
@@ -9,13 +10,31 @@ import { AddExpenseButton, AddExpenseButtonProps } from './AddExpenseButton'
 import { CatExpenseTable } from './CatExpenseTable'
 
 export function CatExpensePage() {
-  const [expenses, setExpenses] = React.useState(CAT_EXPENSE_FIXTURES)
+  const [expenses, setExpenses] = React.useState(
+    catExpensesStorage.read() ?? CAT_EXPENSE_FIXTURES,
+  )
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({})
+
+  const setExpensesAndPersist: typeof setExpenses = React.useCallback(
+    (newExpenses) => {
+      if (typeof newExpenses === 'function') {
+        setExpenses((prevExpenses) => {
+          const updatedExpenses = newExpenses(prevExpenses)
+          catExpensesStorage.write(updatedExpenses)
+          return updatedExpenses
+        })
+      } else {
+        setExpenses(newExpenses)
+        catExpensesStorage.write(newExpenses)
+      }
+    },
+    [],
+  )
 
   const handleAddExpense: AddExpenseButtonProps['onSubmitNewExpense'] = (
     values,
   ) => {
-    setExpenses((prevExpenses) => [
+    setExpensesAndPersist((prevExpenses) => [
       // Add to the beginning of the list
       { ...values, id: nanoid(), amount: dollarsToCents(values.amount) },
       ...prevExpenses,
@@ -24,7 +43,7 @@ export function CatExpensePage() {
 
   const handleDeleteExpense = () => {
     // Delete the selected rows
-    setExpenses((prevExpenses) =>
+    setExpensesAndPersist((prevExpenses) =>
       prevExpenses.filter((_expense, index) => !rowSelection[index]),
     )
     // Reset the row selection
