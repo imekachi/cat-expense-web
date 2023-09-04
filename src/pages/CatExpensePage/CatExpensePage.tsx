@@ -7,7 +7,7 @@ import { Button } from '@/lib/design-system/Button'
 import { dollarsToCents } from '@/lib/utils/currencyUnit'
 import { isObjEmpty } from '@/lib/utils/isObjEmpty'
 import { AddExpenseButton, AddExpenseButtonProps } from './AddExpenseButton'
-import { CatExpenseTable } from './AddExpenseButton/CatExpenseTable'
+import { CatExpenseTable } from './CatExpenseTable'
 
 export function CatExpensePage() {
   const [expenses, setExpenses] = React.useState(

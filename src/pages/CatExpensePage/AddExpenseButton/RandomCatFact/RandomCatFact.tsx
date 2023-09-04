@@ -1,4 +1,4 @@
-import { useRandomCatFactQuery } from '@/pages/CatExpensePage/AddExpenseButton/RandomCatFact/useRandomCatFactQuery'
+import { useRandomCatFactQuery } from './useRandomCatFactQuery'
 
 export function RandomCatFact() {
   const { data } = useRandomCatFactQuery()
